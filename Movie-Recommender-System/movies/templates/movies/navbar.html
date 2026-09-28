@@ -8,9 +8,32 @@
 <nav class="bg-[#121212] bg-opacity-50 backdrop-blur-lg p-4 sticky top-0 z-40 font-['Inter'] text-white">
     <div class="container mx-auto flex justify-between items-center">
         <!-- Logo -->
-        <a href="/" class="text-xl font-bold flex items-center text-White">
-            <span class="ml-2">Movie Recommender System</span>
-        </a>
+        
+<!-- Animated Logo -->
+
+<div class="flex items-center gap-2.5" aria-label="Movie Recommender">
+  <a href="/" aria-label="Movie Recommender home" class="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] rounded-full relative inline-block">
+    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 12px rgba(202,138,4,0.6));">
+      <!-- Outer ring -->
+      <circle cx="50" cy="50" r="42" stroke="#A07002" stroke-width="2" fill="none" opacity="0.9"/>
+      <!-- Inner target circle -->
+      <circle cx="50" cy="50" r="22" stroke="#CA8A04" stroke-width="3" fill="none" opacity="0.95"/>
+      <circle cx="50" cy="50" r="14" stroke="#CA8A04" stroke-width="2" fill="none" opacity="0.9"/>
+      <circle cx="50" cy="50" r="6" fill="#FDE68A" opacity="1"/>
+      <!-- Spinning bright arc (inside circle, moves around) -->
+      <circle cx="50" cy="50" r="22" stroke="#FDE68A" stroke-width="3" stroke-dasharray="45 30" stroke-linecap="round" fill="none" opacity="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Small play button top-right -->
+      <g transform="translate(72, 12)">
+        <circle cx="0" cy="0" r="10" fill="#CA8A04" opacity="0.95"/>
+        <polygon points="-3,-4 5,0 -3,4" fill="#0F0F23"/>
+      </g>
+    </svg>
+  </a>
+  <a href="/" class="text-lg font-bold text-white tracking-tight hover:text-[#FDE68A] transition-colors">Movie Recommender System</a>
+</div>
+
 
         <!-- Search Bar -->
         <div class="relative w-96 mx-4">
@@ -30,7 +53,14 @@
         <div class="flex items-center space-x-6 text-gray-500 font-medium">
 
             <!-- User Authentication -->
-            {% if user.is_authenticated %}
+            {% if request.session.admin_logged_in %}
+            <!-- Admin Session -->
+            <div class="flex items-center space-x-4">
+                <span class="text-red-400 font-bold">Admin</span>
+                <a href="{% url 'admin_dashboard' %}" class="text-gray-300 hover:text-white">Admin Panel</a>
+                <a href="{% url 'admin_logout' %}" class="text-red-400 hover:text-red-300">Admin Logout</a>
+            </div>
+            {% elif user.is_authenticated %}
             <div class="relative">
                 <div id="user-icon"
                     class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-red-700 transition duration-300">

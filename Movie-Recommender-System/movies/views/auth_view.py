@@ -3,24 +3,26 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from movies.forms import RegisterForm
 from django.contrib import messages
+from django.contrib.messages import get_messages
 
 def register(request):
     """User Registration with Password Hashing Fix"""
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)  # ✅ Don't save immediately
-            user.set_password(form.cleaned_data["password1"])  # ✅ Hash password manually
-            user.save()
+            user = form.save()  # This saves the user and creates the UserProfile
             messages.success(request, "Registration successful!")
             return redirect("login")
         else:
-            print("🚨 Registration Form Errors:", form.errors)  # ✅ Debugging step
-            messages.error(request, "Error in registration. Please check the form.")
+            # Show specific error messages from form
+            errors = form.errors.as_text()
+            messages.error(request, f"Registration failed: {errors}")
 
     else:
         form = RegisterForm()
 
+    # Consume leftover messages to prevent stacking
+    get_messages(request)
     return render(request, "movies/register.html", {"form": form})
 
 def user_login(request):
@@ -55,14 +57,22 @@ def user_login(request):
                 messages.success(request, "Login successful!")
                 return redirect("home")
             else:
-                messages.error(request, "Incorrect password.")  # ✅ Wrong password
+                messages.error(request, "Invalid password. Please try again.")  # Wrong password
         else:
-            messages.error(request, "No account found with that username or email.")  # ✅ User does not exist
+            # No user found - check if it was email or username and provide specific message
+            if '@' in str(login_input):
+                messages.error(request, "No account found with this email address. Please check your email or register a new account.")
+            else:
+                messages.error(request, "No account found with this username. Please check your username or register a new account.")
 
+    # Consume any leftover messages so they don't accumulate
+    get_messages(request)
     return render(request, "movies/login.html")
 
 def user_logout(request):
     """Handles user logout and redirects to the homepage."""
-    logout(request)  # ✅ Log out the user
-    messages.success(request, "You have been logged out successfully.")  # ✅ Display success message
-    return redirect("home")  # ✅ Redirect to home page instead of login page
+    # Only log out if the user is actually authenticated (not admin session only)
+    if request.user.is_authenticated:
+        logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("home")

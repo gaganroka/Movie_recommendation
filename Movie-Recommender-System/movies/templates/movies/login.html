@@ -1,70 +1,143 @@
 {% extends "movies/base.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Login — Movie Recommender{% endblock %}
 
 {% block content %}
-<div class="flex justify-center items-center min-h-screen bg-black bg-opacity-90 p-4 relative">
-    <!-- Background pattern -->
-    <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(55,55,55,0.3)_1px,transparent_1px)] bg-[length:24px_24px] pointer-events-none">
-    </div>
+<div class="relative min-h-screen flex items-center justify-center overflow-hidden" style="background-color: #0F0F23;" aria-label="Login page">
 
-    <div class="glass rounded-xl p-8 shadow-2xl w-full max-w-md border border-gray-800 relative z-10">
-        <h2 class="text-3xl font-bold text-white text-center mb-8">Welcome Back</h2>
+  <!-- Cinematic radial glow background -->
+  <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+    <div class="absolute top-[-20%] left-[-10%] w-[70vw] h-[70vw] rounded-full opacity-40" style="background: radial-gradient(circle, rgba(30,27,75,0.7) 0%, transparent 70%);"></div>
+    <div class="absolute bottom-[-20%] right-[-10%] w-[60vw] h-[60vw] rounded-full opacity-30" style="background: radial-gradient(circle, rgba(202,138,4,0.25) 0%, transparent 70%);"></div>
+  </div>
 
-        <!-- Show success/error messages -->
+  <!-- Subtle dots pattern -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.15]" aria-hidden="true"
+    style="background-image: radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px); background-size: 28px 28px;">
+  </div>
 
+  <!-- Spotlight light spots -->
+  <div class="absolute top-[15%] left-[20%] w-32 h-32 rounded-full opacity-10 blur-3xl pointer-events-none" style="background:#CA8A04;" aria-hidden="true"></div>
+  <div class="absolute bottom-[15%] right-[20%] w-40 h-40 rounded-full opacity-10 blur-3xl pointer-events-none" style="background:#4338CA;" aria-hidden="true"></div>
 
-        <form method="POST" class="mt-6 space-y-6">
-            {% csrf_token %}
+  <!-- Glass card -->
+  <main class="relative z-10 w-full max-w-md px-6 animate-enter" role="main">
+    <article class="glass-card" style="background: rgba(27,27,48,0.65); backdrop-filter: blur(24px) saturate(1.2); -webkit-backdrop-filter: blur(24px) saturate(1.2); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 48px 36px 36px; box-shadow: 0 25px 60px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.03) inset;" aria-label="Login form card">
 
-            <div>
-                <label for="login_input" class="block text-gray-300 font-semibold mb-2">Username or Email</label>
-                <input type="text" id="login_input" name="login_input" placeholder="Enter username or email"
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+      <!-- Cinematic logo -->
+      <div class="flex justify-center mb-6" aria-label="Movie Recommender logo">
+        <a href="/" aria-label="Movie Recommender home" class="focus:outline-none focus-visible:ring-3 focus-visible:ring-[#CA8A04] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0F0F23] rounded-full transition-transform duration-300 hover:scale-105">
+          <svg width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 16px rgba(202,138,4,0.7), 0 0 30px rgba(202,138,4,0.25));">
+            <!-- Outer gold ring -->
+            <circle cx="50" cy="50" r="45" stroke="#CA8A04" stroke-width="2.5" fill="none" opacity="0.95"/>
+            <circle cx="50" cy="50" r="45" stroke="#CA8A04" stroke-width="0.8" fill="none" opacity="0.3"/>
+            <!-- Target inner circles -->
+            <circle cx="50" cy="50" r="26" stroke="#CA8A04" stroke-width="3" fill="none" opacity="0.95"/>
+            <circle cx="50" cy="50" r="16" stroke="#CA8A04" stroke-width="2.5" fill="none" opacity="0.9"/>
+            <circle cx="50" cy="50" r="7" fill="#FDE68A" opacity="1"/>
+            <!-- Bright spinning arc inside circle -->
+            <circle cx="50" cy="50" r="23" stroke="#FDE68A" stroke-width="3.5" stroke-dasharray="50 35" stroke-linecap="round" fill="none" opacity="1">
+              <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Small play button top-right -->
+            <g transform="translate(74, 10)">
+              <circle cx="0" cy="0" r="11" fill="#CA8A04" opacity="0.95"/>
+              <polygon points="-3.5,-5 6,0 -3.5,5" fill="#0F0F23"/>
+            </g>
+          </svg>
+        </a>
+      </div>
 
-            <div>
-                <label for="password" class="block text-gray-300 font-semibold mb-2">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter password"
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+      <!-- Hero text -->
+      <header class="text-center mb-8" role="banner">
+        <h1 class="text-[2.5rem] font-bold tracking-[-0.02em] leading-[1.15] mb-3" style="font-family: 'Inter', sans-serif; color: #F8FAFC; letter-spacing: 0.02em; text-shadow: 0 2px 24px rgba(202,138,4,0.15);">
+          Welcome Back
+        </h1>
+        <p class="text-base font-light tracking-wide" style="color: #94A3B8; font-family: 'Inter', sans-serif; letter-spacing: 0.08em;">SIGN IN TO YOUR CINEMA</p>
+      </header>
 
-            <button type="submit"
-                class="w-full px-6 py-3 text-white font-medium  transition duration-300 bg-white bg-opacity-10 hover:bg-opacity-20 hover:shadow-lg hover:translate-y-[-2px] border border-gray-700">
-                Login
-            </button>
-        </form>
+      <!-- Messages -->
+      {% if messages %}
+      <div class="mb-5 space-y-2" role="status" aria-live="polite">
+        {% for message in messages %}
+        <div class="text-sm px-4 py-3 rounded-lg border transition-colors duration-200 flex items-start gap-3 {% if message.tags == 'success' %}bg-[#CA8A0418] text-[#FDE68A] border-[#CA8A0433]{% elif message.tags == 'error' %}bg-[#EF444418] text-[#FCA5A5] border-[#EF444433]{% else %}bg-[#4338CA18] text-[#C7D2FE] border-[#4338CA33]{% endif %}" role="alert">
+          <span aria-hidden="true" class="mt-0.5 flex-shrink-0">
+            {% if message.tags == 'success' %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2.5"><path d="M5 12l5 5l9-9"/></svg>{% elif message.tags == 'error' %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>{% else %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C7D2FE" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>{% endif %}
+          </span>
+          <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
-        <p class="text-gray-400 text-center mt-8">New here?
-            <a href="{% url 'register' %}" class="text-white hover:underline transition-all duration-300">Create an
-                account</a>
+      <form method="POST" class="space-y-5" novalidate aria-label="Login form">
+        {% csrf_token %}
+
+        <div>
+          <label for="login_input" class="block text-sm font-medium tracking-wide mb-2" style="color:#F8FAFC; font-family:'Inter',sans-serif; letter-spacing:0.05em;">Username or Email</label>
+          <div class="relative">
+            <input type="text" id="login_input" name="login_input" placeholder="Enter username or email" autocomplete="username" aria-required="true"
+              class="w-full px-4 py-3.5 rounded-xl text-base transition-all duration-300 bg-[#0F0F23]/60 border border-[#4338CA]/60 text-[#F8FAFC] placeholder-[#94A3B8]/70 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/60 focus:border-[#CA8A04] focus:bg-[#1B1B30] shadow-inner"
+              style="font-family:'Inter',sans-serif; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);" />
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium tracking-wide mb-2" style="color:#F8FAFC; font-family:'Inter',sans-serif; letter-spacing:0.05em;">Password</label>
+          <div class="relative">
+            <input type="password" id="password" name="password" placeholder="Enter password" autocomplete="current-password" aria-required="true"
+              class="w-full px-4 py-3.5 rounded-xl text-base transition-all duration-300 bg-[#0F0F23]/60 border border-[#4338CA]/60 text-[#F8FAFC] placeholder-[#94A3B8]/70 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/60 focus:border-[#CA8A04] focus:bg-[#1B1B30] shadow-inner"
+              style="font-family:'Inter',sans-serif; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);" />
+          </div>
+        </div>
+
+        <button type="submit"
+          class="w-full py-3.5 rounded-xl text-base font-semibold tracking-wide transition-all duration-300 relative overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F0F23]"
+          style="background: linear-gradient(135deg, #CA8A04 0%, #A07002 100%); color:#0F0F23; font-family:'Inter',sans-serif; letter-spacing:0.08em; box-shadow: 0 4px 20px rgba(202,138,4,0.35);"
+          aria-label="Sign in to your account">
+          <span class="relative z-10 group-hover:-translate-y-px inline-block transition-transform">SIGN IN</span>
+          <span class="absolute inset-0 bg-gradient-to-r from-[#CA8A04] via-[#E6B444] to-[#CA8A04] opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <footer class="mt-8 text-center" role="contentinfo">
+        <p class="text-sm" style="color:#94A3B8; font-family:'Inter',sans-serif; letter-spacing:0.02em;">New to the cinema?
+          <a href="{% url 'register' %}" class="font-semibold transition-colors duration-200 hover:text-[#CA8A04] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F0F23] rounded-sm px-1" style="color:#F8FAFC;">Create an account</a>
         </p>
-    </div>
+      </footer>
+    </article>
+  </main>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    html, body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    .animate-enter {
+      animation: enterFade 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      will-change: opacity, transform;
+    }
+    @keyframes enterFade {
+      from { opacity: 0; transform: translateY(24px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-enter { animation: none; opacity: 1; transform: none; }
+    }
+
+    /* Focus ring visible on keyboard */
+    input:focus-visible, button:focus-visible, a:focus-visible {
+      outline: none;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+      -webkit-box-shadow: 0 0 0 30px #0F0F23 inset !important;
+      -webkit-text-fill-color: #F8FAFC !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+  </style>
 </div>
-
-<style>
-    .animate-fade-in {
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .glass {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-</style>
 {% endblock %}

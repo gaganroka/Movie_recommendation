@@ -1,107 +1,129 @@
 {% extends "movies/base.html" %}
-
 {% block title %}Register{% endblock %}
-
 {% block content %}
-<div class="flex justify-center items-center min-h-screen bg-black relative">
-    <!-- Background pattern -->
-    <div
-        class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(55,55,55,0.3)_1px,transparent_1px)] bg-[length:24px_24px] pointer-events-none">
-    </div>
+<div class="flex justify-center items-center min-h-screen bg-[#0F0F23] px-4 relative overflow-hidden">
+  <!-- Glow spots -->
+  <div class="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full opacity-30 pointer-events-none" style="background: radial-gradient(circle, rgba(30,27,75,0.8) 0%, transparent 70%);"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, rgba(202,138,4,0.4) 0%, transparent 70%);"></div>
 
-    <div class="glass rounded-xl p-8 shadow-2xl w-full max-w-md border border-gray-800 relative z-10">
-        <h2 class="text-3xl font-bold text-white text-center mb-6">Create an Account</h2>
+  <main class="relative z-10 w-full max-w-lg">
+    <article class="rounded-3xl border border-white/10 shadow-2xl p-8 md:p-10" style="background: rgba(27,27,48,0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);">
 
+      <header class="text-center mb-8">
+        <a href="/" class="inline-flex items-center gap-3 mb-5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] rounded-full" aria-label="Movie Recommender home">
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 16px rgba(202,138,4,0.7));">
+            <circle cx="50" cy="50" r="45" stroke="#CA8A04" stroke-width="2.5" fill="none" opacity="0.95"/>
+            <circle cx="50" cy="50" r="45" stroke="#CA8A04" stroke-width="0.8" fill="none" opacity="0.3"/>
+            <circle cx="50" cy="50" r="26" stroke="#CA8A04" stroke-width="3" fill="none" opacity="0.95"/>
+            <circle cx="50" cy="50" r="16" stroke="#CA8A04" stroke-width="2.5" fill="none" opacity="0.9"/>
+            <circle cx="50" cy="50" r="7" fill="#FDE68A" opacity="1"/>
+            <circle cx="50" cy="50" r="23" stroke="#FDE68A" stroke-width="3.5" stroke-dasharray="50 35" stroke-linecap="round" fill="none" opacity="1">
+              <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/>
+            </circle>
+            <g transform="translate(74, 10)">
+              <circle cx="0" cy="0" r="11" fill="#CA8A04" opacity="0.95"/>
+              <polygon points="-3.5,-5 6,0 -3.5,5" fill="#0F0F23"/>
+            </g>
+          </svg>
+          <span class="text-xl font-bold text-white tracking-tight">Movie Recommender</span>
+        </a>
+        <h1 class="text-3xl font-bold text-white tracking-tight mb-1">Create Account</h1>
+        <p class="text-sm text-[#94A3B8] tracking-wide">Join the cinema</p>
+      </header>
 
+      {% if messages %}
+      <div class="mb-5 space-y-2" role="status" aria-live="polite">
+        {% for message in messages %}
+        <div class="text-sm px-4 py-3 rounded-lg border flex items-start gap-3 transition-colors duration-200 {% if message.tags == 'success' %}bg-[#CA8A0418] text-[#FDE68A] border-[#CA8A0433]{% elif message.tags == 'error' %}bg-[#EF444418] text-[#FCA5A5] border-[#EF444433]{% else %}bg-[#4338CA18] text-[#C7D2FE] border-[#4338CA33]{% endif %}" role="alert">
+          <span aria-hidden="true">
+            {% if message.tags == 'success' %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2.5"><path d="M5 12l5 5l9-9"/></svg>
+            {% elif message.tags == 'error' %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            {% else %}<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C7D2FE" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {% endif %}
+          </span>
+          <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
 
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            {% csrf_token %}
+      <form method="POST" enctype="multipart/form-data" class="space-y-4" novalidate aria-label="Registration form">
+        {% csrf_token %}
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Username</label>
-                <input type="text" name="username" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+        <!-- 2 inputs per line -->
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="username" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Username" autocomplete="username"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+            {% if form.username.errors %}<p class="text-xs text-red-400 mt-1">{{ form.username.errors.0 }}</p>{% endif %}
+          </div>
+          <div>
+            <label for="email" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Email" autocomplete="email"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+            {% if form.email.errors %}<p class="text-xs text-red-400 mt-1">{{ form.email.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Email Address</label>
-                <input type="email" name="email" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="full_name" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Full Name</label>
+            <input type="text" id="full_name" name="full_name" placeholder="Name"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+          </div>
+          <div>
+            <label for="contact" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Contact</label>
+            <input type="text" id="contact" name="contact" placeholder="Phone"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Full Name</label>
-                <input type="text" name="full_name" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+        <!-- Profile photo: 1 line -->
+        <div>
+          <label for="profile_photo" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Profile Photo</label>
+          <div class="flex items-center gap-2">
+            <input type="file" id="profile_photo" name="profile_photo" accept="image/*"
+              class="w-full text-sm text-[#F8FAFC] file:mr-3 file:px-3 file:py-1.5 file:rounded-md file:text-xs file:border-0 file:bg-[#CA8A04] file:text-[#0F0F23] file:font-semibold hover:file:opacity-90 transition cursor-pointer"
+            />
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Contact</label>
-                <input type="text" name="contact" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="password1" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Password</label>
+            <input type="password" id="password1" name="password1" required placeholder="Min 8 chars" autocomplete="new-password"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+            {% if form.password1.errors %}<p class="text-xs text-red-400 mt-1">{{ form.password1.errors.0 }}</p>{% endif %}
+          </div>
+          <div>
+            <label for="password2" class="block text-xs font-medium text-[#F8FAFC] tracking-wide mb-1.5">Confirm</label>
+            <input type="password" id="password2" name="password2" required placeholder="Confirm" autocomplete="new-password"
+              class="w-full px-3 py-2.5 rounded-lg text-sm bg-[#0F0F23]/60 border border-[#4338CA]/50 text-[#F8FAFC] placeholder-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-[#CA8A04]/50 focus:border-[#CA8A04] transition-all duration-200"
+            />
+            {% if form.password2.errors %}<p class="text-xs text-red-400 mt-1">{{ form.password2.errors.0 }}</p>{% endif %}
+          </div>
+        </div>
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Profile Photo</label>
-                <input type="file" name="profile_photo"
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
+        <button type="submit"
+          class="w-full py-3 rounded-xl text-sm font-bold tracking-widest transition-all duration-300 relative overflow-hidden group"
+          style="background: linear-gradient(135deg, #CA8A04 0%, #A07002 100%); color:#0F0F23; box-shadow: 0 4px 24px rgba(202,138,4,0.35);"
+          aria-label="Create account">
+          <span class="relative z-10 group-hover:-translate-y-px inline-block">CREATE ACCOUNT</span>
+          <span class="absolute inset-0 bg-gradient-to-r from-[#CA8A04] via-[#E6B444] to-[#CA8A04] opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true"></span>
+        </button>
+      </form>
 
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Password</label>
-                <input type="password" name="password1" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-                <p class="text-gray-400 text-sm mt-1">Must be at least 8 characters.</p>
-            </div>
-
-            <div>
-                <label class="block text-gray-300 font-semibold mb-2">Confirm Password</label>
-                <input type="password" name="password2" required
-                    class="w-full px-4 py-3  bg-black bg-opacity-50 border border-gray-700 
-                        text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:border-transparent transition duration-300">
-            </div>
-
-            <button type="submit"
-                class="w-full px-6 py-3 text-white font-medium  transition duration-300 bg-white bg-opacity-10 hover:bg-opacity-20 hover:shadow-lg hover:translate-y-[-2px] border border-gray-700">
-                Register
-            </button>
-        </form>
-
-        <p class="text-gray-400 text-center mt-8">
-            Already have an account? <a href="{% url 'login' %}"
-                class="text-white hover:underline transition-all duration-300">Log in</a>
-        </p>
-    </div>
+      <p class="text-center text-sm text-[#94A3B8] mt-6 tracking-wide">
+        Already have an account?
+        <a href="{% url 'login' %}" class="font-semibold text-white hover:text-[#CA8A04] transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F0F23] rounded-sm px-1">Log in</a>
+      </p>
+    </article>
+  </main>
 </div>
-
-<style>
-    .animate-fade-in {
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .glass {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-</style>
 {% endblock %}

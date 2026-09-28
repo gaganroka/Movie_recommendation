@@ -6,20 +6,46 @@ from movies.models.movie_model import Movie, Review
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
-
+from movies.models.admin_session_model import AdminAuthSession
+import secrets
 
 # 🔐 Decorator to protect all admin routes
+# Uses separate AdminAuthSession table, NOT Django session
+
 def admin_required(view_func):
     def wrapper(request, *args, **kwargs):
-        if not request.session.get('admin_logged_in'):
+        # Check admin session from cookie/header, NOT Django session
+        admin_cookie = request.COOKIES.get('admin_session_key')
+        if admin_cookie:
+            try:
+                session = AdminAuthSession.objects.get(session_key=admin_cookie, is_active=True)
+                # Store admin info in request for this request only
+                request.admin_session = session
+            except AdminAuthSession.DoesNotExist:
+                request.admin_session = None
+        else:
+            request.admin_session = None
+
+        if not request.admin_session:
             return redirect('admin_login')
         return view_func(request, *args, **kwargs)
     return wrapper
 
 
-# ✅ Admin Login
+def get_admin_session(request):
+    cookie = request.COOKIES.get('admin_session_key')
+    if cookie:
+        try:
+            return AdminAuthSession.objects.get(session_key=cookie, is_active=True)
+        except AdminAuthSession.DoesNotExist:
+            return None
+    return None
+
+
+# ✅ Admin Login - Uses separate session table
+
 def admin_login(request):
-    print("🔥 ADMIN LOGIN VIEW HIT")  # Add this
+    print("🔥 ADMIN LOGIN VIEW HIT")
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -27,9 +53,16 @@ def admin_login(request):
         try:
             admin_user = AdminUser.objects.get(username=username)
             if check_password(password, admin_user.password):
-                request.session['admin_logged_in'] = True
-                request.session['admin_id'] = admin_user.id
-                return redirect("admin_dashboard")
+                # Create SEPARATE admin session (independent from Django session)
+                session_key = secrets.token_hex(20)
+                AdminAuthSession.objects.create(
+                    session_key=session_key,
+                    admin_user_id=admin_user.id
+                )
+                response = redirect("admin_dashboard")
+                # Set admin cookie - separate from Django's session cookie
+                response.set_cookie('admin_session_key', session_key, max_age=86400*7, httponly=True)
+                return response
             else:
                 messages.error(request, "Incorrect password.")
         except AdminUser.DoesNotExist:
@@ -38,17 +71,22 @@ def admin_login(request):
     return render(request, "custom_admin/login.html")
 
 
-# 🚪 Admin Logout
+# 🚪 Admin Logout - Only removes admin cookie/session
+
 def admin_logout(request):
-    request.session.flush()
-    return redirect('admin_login')
+    cookie = request.COOKIES.get('admin_session_key')
+    if cookie:
+        AdminAuthSession.objects.filter(session_key=cookie).update(is_active=False)
+    response = redirect('admin_login')
+    response.delete_cookie('admin_session_key')
+    return response
 
 
 # 🏠 Admin Dashboard
 @admin_required
 def admin_dashboard(request):
-    admin_id = request.session.get('admin_id')
-    admin_user = AdminUser.objects.get(id=admin_id)
+    admin_session = request.admin_session
+    admin_user = AdminUser.objects.get(id=admin_session.admin_user_id)
 
     return render(request, "custom_admin/dashboard.html", {
         "admin_user": admin_user,
@@ -59,20 +97,17 @@ def admin_dashboard(request):
 
 @admin_required
 def manage_users(request):
-    users = User.objects.all().order_by("id")  # Just fetch all users
+    users = User.objects.all().order_by("id")
     return render(request, "custom_admin/users.html", {"users": users})
 
 # 🎬 Manage Movies
 @admin_required
 def manage_movies(request):
     all_movies = Movie.objects.all()
-    paginator = Paginator(all_movies, 8)  # 8 per page
+    paginator = Paginator(all_movies, 8)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-    return render(request, "custom_admin/movies.html", {
-        "movies": page_obj
-    })
+    return render(request, "custom_admin/movies.html", {"movies": page_obj})
 
 @admin_required
 def add_movie(request):
@@ -92,20 +127,12 @@ def add_movie(request):
             messages.error(request, "Title and poster URL are required.")
         else:
             Movie.objects.create(
-                title=title,
-                year=year,
-                genre=genre,
-                director=director,
-                actors=actors,
-                plot=plot,
-                imdb_rating=imdb_rating,
-                imdb_votes=imdb_votes,
-                box_office=box_office,
-                poster_url=poster_url
+                title=title, year=year, genre=genre, director=director,
+                actors=actors, plot=plot, imdb_rating=imdb_rating,
+                imdb_votes=imdb_votes, box_office=box_office, poster_url=poster_url
             )
             messages.success(request, f"Movie '{title}' added successfully.")
             return redirect("manage_movies")
-
     return render(request, "custom_admin/add_movie.html")
 
 # 📝 Manage Reviews
@@ -117,7 +144,6 @@ def manage_reviews(request):
 @admin_required
 def edit_movie(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
-
     if request.method == "POST":
         movie.title = request.POST.get("title")
         movie.year = request.POST.get("year")
@@ -130,19 +156,15 @@ def edit_movie(request, movie_id):
         movie.box_office = request.POST.get("box_office")
         movie.poster_url = request.POST.get("poster_url")
         movie.save()
-
         messages.success(request, f"Movie '{movie.title}' updated successfully.")
         return redirect("manage_movies")
-
     return render(request, "custom_admin/edit_movie.html", {"movie": movie})
 
 @admin_required
 def delete_movie(request, movie_id):
     movie = get_object_or_404(Movie, id=movie_id)
-
     if request.method == "POST":
         movie.delete()
         messages.success(request, f"Movie '{movie.title}' deleted successfully.")
         return redirect("manage_movies")
-
     return redirect("edit_movie", movie_id=movie_id)

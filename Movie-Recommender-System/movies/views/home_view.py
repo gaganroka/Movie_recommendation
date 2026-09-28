@@ -17,8 +17,8 @@ def home_view(request):
     all_movies = list(Movie.objects.all())
     random_movies = random.sample(all_movies, min(len(all_movies), 20))
 
-    # ✅ Check if user is logged in
-    if request.user.is_authenticated:
+    # ✅ Check if user is logged in (but not admin session)
+    if request.user.is_authenticated and not request.session.get('admin_logged_in'):
         user_favorites = Favorite.objects.filter(user=request.user).select_related("movie")
 
         # ✅ If user has favorites, generate recommendations

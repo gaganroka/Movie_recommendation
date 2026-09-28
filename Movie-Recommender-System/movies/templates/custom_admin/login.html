@@ -13,8 +13,41 @@
   <!-- Login Box -->
   <div class="relative px-8 py-10 rounded-2xl shadow-xl w-full max-w-sm" style="background-color: #181818;">
 
-    <form method="POST" action="" class="space-y-5">
+          <!-- Messages -->
+      {% if messages %}
+      <div class="mb-3">
+        {% for message in messages %}
+        <div class="text-sm p-2 rounded {% if message.tags == 'success' %}bg-green-900/30 text-green-300 border border-green-700{% elif message.tags == 'error' %}bg-red-900/30 text-red-300 border border-red-700{% endif %}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+<form method="POST" action="" class="space-y-5">
       {% csrf_token %}
+      
+<div class="flex items-center gap-2.5" aria-label="Movie Recommender">
+  <a href="/" aria-label="Movie Recommender home" class="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#CA8A04] rounded-full relative inline-block">
+    <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 0 12px rgba(202,138,4,0.6));">
+      <!-- Outer ring -->
+      <circle cx="50" cy="50" r="42" stroke="#A07002" stroke-width="2" fill="none" opacity="0.9"/>
+      <!-- Inner target circle -->
+      <circle cx="50" cy="50" r="22" stroke="#CA8A04" stroke-width="3" fill="none" opacity="0.95"/>
+      <circle cx="50" cy="50" r="14" stroke="#CA8A04" stroke-width="2" fill="none" opacity="0.9"/>
+      <circle cx="50" cy="50" r="6" fill="#FDE68A" opacity="1"/>
+      <!-- Spinning bright arc (inside circle, moves around) -->
+      <circle cx="50" cy="50" r="22" stroke="#FDE68A" stroke-width="3" stroke-dasharray="45 30" stroke-linecap="round" fill="none" opacity="1">
+        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1.2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Small play button top-right -->
+      <g transform="translate(72, 12)">
+        <circle cx="0" cy="0" r="10" fill="#CA8A04" opacity="0.95"/>
+        <polygon points="-3,-4 5,0 -3,4" fill="#0F0F23"/>
+      </g>
+    </svg>
+  </a>
+  <a href="/" class="text-base font-bold text-white tracking-tight hover:text-[#FDE68A] transition-colors">Movie Recommender</a>
+</div>/div>
       <h2 class="text-center font-semibold text-xl">Admin Login</h2>
 
       <!-- Email -->

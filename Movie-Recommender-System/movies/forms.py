@@ -29,6 +29,34 @@ class RegisterForm(UserCreationForm):
             )
         return user
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError("Username is required.")
+        if len(username) < 3:
+            raise forms.ValidationError("Username must be at least 3 characters.")
+        from django.contrib.auth.models import User
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("Username already exists. Please choose another.")
+        return username
+
+    def clean_password1(self):
+        password = self.cleaned_data.get('password1')
+        if not password:
+            raise forms.ValidationError("Password is required.")
+        if len(password) < 8:
+            raise forms.ValidationError("Password must be at least 8 characters long.")
+        return password
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError("Email is required.")
+        from django.contrib.auth.models import User
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("An account with this email already exists.")
+        return email
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review

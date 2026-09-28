@@ -135,3 +135,9 @@ STATICFILES_DIRS = [
 
 
 
+
+# Full separation: Admin uses separate session cookie
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_PATH = '/'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # for local dev

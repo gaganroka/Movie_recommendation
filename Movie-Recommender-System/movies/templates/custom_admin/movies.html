@@ -1,0 +1,116 @@
+{% extends "custom_admin/base.html" %}
+{% block title %}Manage Movies{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-semibold">Movies</h1>
+  <a href="{% url 'add_movie' %}" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700">Add Movie</a>
+</div>
+
+<!-- Movies Grid -->
+<!-- Movies Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+  {% for movie in movies %}
+  <a href="{% url 'edit_movie' movie.id %}"
+    class="block bg-zinc-900 rounded-lg overflow-hidden shadow hover:scale-[1.02] transition-all duration-300 relative">
+
+    <!-- Movie Poster -->
+    <div class="relative">
+      <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="w-full h-32 object-cover">
+
+      <!-- Year Badge (Top-left corner) -->
+      <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs px-3 py-1 rounded-full shadow">
+        {{ movie.year }}
+      </span>
+    </div>
+
+    <!-- Movie Info -->
+    <div class="p-3 text-xs leading-5">
+      <h3 class="text-white font-semibold text-base mb-1">{{ movie.title }}</h3>
+      <p class="text-gray-400 truncate">Genre: {{ movie.genre }}</p>
+      <p class="text-gray-400 truncate">Director: {{ movie.director }}</p>
+      <p class="text-gray-400 truncate">Actor: {{ movie.actors|truncatechars:40 }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+
+
+<!-- Pagination -->
+
+<div class="mt-8 flex justify-center items-center gap-2 text-sm">
+  {% with total_pages=movies.paginator.num_pages current=movies.number %}
+  {% if total_pages > 1 %}
+
+  <!-- ← Previous Group -->
+  {% with prev_start=current|add:"-3" %}
+  {% if prev_start > 0 %}
+  <a href="?page={{ prev_start }}" class="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">←</a>
+  {% else %}
+  <span class="px-3 py-1 text-gray-500">←</span>
+  {% endif %}
+  {% endwith %}
+
+  <!-- Show 5 pages centered around current -->
+  {% with offset_list="-2,-1,0,1,2" %}
+  {% for i in offset_list|cut:","|make_list %}
+  {% with offset=i|stringformat:"i" %}
+  {% with page_num=current|add:offset %}
+  {% if page_num > 0 and page_num <= total_pages %}
+  {% if page_num == current %}
+  <span class="px-3 py-1 bg-white text-black font-bold rounded">{{ page_num }}</span>
+  {% else %}
+  <a href="?page={{ page_num }}" class="px-3 py-1 rounded hover:bg-gray-600">{{ page_num }}</a>
+  {% endif %}
+  {% endif %}
+  {% endwith %}
+  {% endwith %}
+  {% endfor %}
+  {% endwith %}
+
+  <!-- → Next Group -->
+  {% with next_start=current|add:"2" %}
+  {% if next_start < total_pages %}
+  <a href="?page={{ next_start|add:'1' }}" class="px-3 py-1 rounded bg-gray-700 hover:bg-gray-600">→</a>
+  {% else %}
+  <span class="px-3 py-1 text-gray-500">→</span>
+  {% endif %}
+  {% endwith %}
+
+  {% endif %}
+  {% endwith %}
+</div>
+<!-- Add Movie Modal -->
+<div id="addMovieModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-60 flex items-center justify-center">
+  <div class="bg-zinc-900 text-white p-8 rounded-md w-full max-w-md relative">
+    <!-- Close button -->
+    <button onclick="closeMovieModal()" class="absolute top-2 right-3 text-white text-xl">&times;</button>
+
+    <h2 class="text-xl font-semibold mb-6 text-center">Enter Movie Detail</h2>
+
+    <form method="POST" action="{% url 'add_movie' %}" class="space-y-4">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="Enter Movie title"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="year" placeholder="Year" class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="genre" placeholder="Genre" class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="director" placeholder="Director"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="actors" placeholder="Actors" class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="plot" placeholder="Plot" class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="imdb_rating" placeholder="IMDB Rate"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="imdb_votes" placeholder="IMDB Votes"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="box_office" placeholder="Box Office"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+      <input type="text" name="poster_url" placeholder="Poster URL"
+        class="w-full px-4 py-2 bg-zinc-800 rounded outline-none" />
+
+      <button type="submit" class="w-full mt-4 bg-gray-700 hover:bg-gray-600 rounded py-2">Add Movie</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

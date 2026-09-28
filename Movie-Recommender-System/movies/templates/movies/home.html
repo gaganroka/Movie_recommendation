@@ -1,0 +1,40 @@
+{% extends "movies/base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class=" bg-black container mx-auto px-4  bg-opacity-40 backdrop-blur-lg">
+    <!-- ✅ "For You" Section (Content-Based Filtering) -->
+    {% if content_based_recommendations %}
+    <h2 class="text-2xl font-bold pt-10 ml-10">Recommended For You</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-[70px] p-10">
+        {% for movie in content_based_recommendations %}
+        {% include 'movies/movie_card.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ✅ "People Also Liked" Section (Collaborative Filtering) -->
+    {% if collaborative_recommendations %}
+    <h2 class="text-2xl font-bold pt-10 ml-10">People Also Liked</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-[70px] p-10">
+        {% for movie in collaborative_recommendations %}
+        {% include 'movies/movie_card.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- ✅ "Trending Movies" Section (20 Random Movies if No Recommendations) -->
+    {% if random_movies %}
+    <h2 class="text-2xl font-bold pt-10 ml-10">Trending Movies</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-[70px] p-10">
+        {% for movie in random_movies %}
+        {% include 'movies/movie_card.html' %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+
+</div>
+{% endblock %}

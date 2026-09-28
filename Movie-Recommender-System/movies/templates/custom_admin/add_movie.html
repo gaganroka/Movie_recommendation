@@ -1,0 +1,90 @@
+{% extends "custom_admin/base.html" %}
+{% load static %}
+{% block title %}Add Movie{% endblock %}
+
+{% block content %}
+<!-- Back Button -->
+<div class="max-w-5xl mx-auto mt-6 text-white">
+  <a href="{% url 'manage_movies' %}"
+    class="inline-flex items-center gap-2 text-sm bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-md transition">
+    <i class="fas fa-arrow-left"></i> Back to Movies
+  </a>
+</div>
+
+<!-- Page Heading -->
+<div class="max-w-5xl mx-auto mt-4 text-white">
+  <h1 class="text-3xl font-bold text-center mb-8">Add New Movie</h1>
+
+  <form method="POST" action="" class="grid grid-cols-1 md:grid-cols-2 gap-6 p-8 rounded-2xl shadow-xl"
+    style="background-color: #181818;">
+    {% csrf_token %}
+
+    <div>
+      <label class="block text-sm mb-1">Title</label>
+      <input type="text" name="title" placeholder="Movie title"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Year</label>
+      <input type="text" name="year" placeholder="e.g. 2024"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Genre</label>
+      <input type="text" name="genre" placeholder="e.g. Action, Drama"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Director</label>
+      <input type="text" name="director" placeholder="Director name"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div class="md:col-span-2">
+      <label class="block text-sm mb-1">Actors</label>
+      <input type="text" name="actors" placeholder="Actor names separated by comma"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div class="md:col-span-2">
+      <label class="block text-sm mb-1">Plot</label>
+      <textarea name="plot" rows="3" placeholder="Plot summary"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">IMDb Rating</label>
+      <input type="text" name="imdb_rating" placeholder="e.g. 7.8"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">IMDb Votes</label>
+      <input type="text" name="imdb_votes" placeholder="e.g. 15645"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Box Office</label>
+      <input type="text" name="box_office" placeholder="e.g. $500M"
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div>
+      <label class="block text-sm mb-1">Poster URL</label>
+      <input type="text" name="poster_url" placeholder="https://..."
+        class="w-full px-4 py-2 border border-gray-600 rounded-md bg-transparent text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    </div>
+
+    <div class="md:col-span-2">
+      <button type="submit"
+        class="w-full py-2 rounded-full bg-white text-black font-semibold hover:opacity-90 transition text-lg">
+        Add Movie
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %}

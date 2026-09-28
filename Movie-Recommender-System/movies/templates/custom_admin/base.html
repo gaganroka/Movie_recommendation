@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Admin Panel{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-black text-white">
+
+  <!-- Fixed Full Navbar -->
+  {% include "custom_admin/navbar.html" %}
+
+  <!-- Sidebar + Content wrapper with padding for navbar -->
+  <div class="flex pt-16">
+    {% include "custom_admin/sidebar.html" %}
+
+    <main id="main-content" class="flex-1 p-6 overflow-y-auto min-h-[calc(100vh-4rem)] transition-all duration-300">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("w-64");
+    sidebar.classList.toggle("w-20");
+  }
+
+</script>
+</body>
+</html>

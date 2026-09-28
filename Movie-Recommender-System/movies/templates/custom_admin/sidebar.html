@@ -1,0 +1,60 @@
+<aside id="sidebar"
+  class="bg-zinc-950 w-64 h-[calc(100vh-4rem)] sticky top-16 overflow-hidden transition-all duration-300 text-white flex flex-col justify-between">
+
+  <!-- Top: Navigation -->
+  <div>
+    <ul class="space-y-6 px-5 mt-4" id="sidebar-menu">
+      <li>
+        <a href="{% url 'admin_dashboard' %}" class="flex items-center gap-3">
+          <i class="fa fa-th-large text-lg w-6 text-center"></i>
+          <span class="sidebar-label">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'manage_movies' %}" class="flex items-center gap-3">
+          <i class="fa fa-film text-lg w-6 text-center"></i>
+          <span class="sidebar-label">Movies</span>
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'manage_users' %}" class="flex items-center gap-3">
+          <i class="fa fa-users text-lg w-6 text-center"></i>
+          <span class="sidebar-label">Users</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Bottom: Styled Logout Button -->
+  <form method="POST" action="{% url 'admin_logout' %}" class="px-5 mb-5">
+    {% csrf_token %}
+    <button
+      class="sidebar-logout w-full py-2 rounded-full bg-white text-black font-semibold hover:opacity-90 transition">
+      <span class="sidebar-label">Logout</span>
+      <i class="fas fa-sign-out-alt w-full text-center block sidebar-icon-only hidden"></i>
+    </button>
+  </form>
+
+  <style>
+    /* Hide text labels on collapsed sidebar */
+    #sidebar.w-20 .sidebar-label {
+      display: none;
+    }
+
+    /* Center icons in collapsed state */
+    #sidebar.w-20 a,
+    #sidebar.w-20 .sidebar-logout {
+      justify-content: center !important;
+    }
+
+    /* Show icon-only version of logout when collapsed */
+    #sidebar.w-20 .sidebar-icon-only {
+      display: block !important;
+    }
+
+    /* Hide logout icon when expanded */
+    #sidebar:not(.w-20) .sidebar-icon-only {
+      display: none !important;
+    }
+  </style>
+</aside>

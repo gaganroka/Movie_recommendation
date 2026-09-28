@@ -1,0 +1,38 @@
+{% extends "movies/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class=" mx-auto bg-black  p-6 shadow-lg text-white">
+    <div class="flex justify-between items-center">
+        <h2 class="text-2xl font-bold ">User Profile</h2>
+
+        <!-- 🔧 Settings Button -->
+        <a href="{% url 'settings' %}"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 shadow-md">
+            Settings
+        </a>
+    </div>
+
+    <!-- Favorite Movies -->
+    <div class="mt-6">
+        <h3 class="text-xl font-bold ml-6">Favorite Movies</h3>
+        {% if favorite_movies %}
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
+            {% for favorite in favorite_movies %}
+            <a href="{% url 'movie_detail' favorite.movie.id %}"
+                class="border-4 backdrop-blur-md bg-white/10 p-4 ml-4 mr-4  rounded-xl shadow-lg transform hover:scale-105 transition duration-300 block">
+                <img src="{{ favorite.movie.poster_url }}" alt="{{ favorite.movie.title }}"
+                    class="rounded-lg h-64 w-full object-cover">
+                <h3 class="text-lg font-semibold mt-2 text-white">{{ favorite.movie.title }}</h3>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-400">No favorite movies yet.</p>
+        {% endif %}
+    </div>
+
+
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "custom_admin/base.html" %}
+
+{% block content %}
+<div class="px-6 py-6 bg-black min-h-screen">
+    <h1 class="text-2xl font-bold text-white mb-6">All User Reviews</h1>
+    {% if reviews %}
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border border-gray-700 bg-gray-900 text-white rounded-lg shadow">
+            <thead class="bg-gray-800 text-white">
+                <tr>
+                    <th class="p-3 border border-gray-700 text-left">#</th>
+                    <th class="p-3 border border-gray-700 text-left">User</th>
+                    <th class="p-3 border border-gray-700 text-left">Movie</th>
+                    <th class="p-3 border border-gray-700 text-left">Rating</th>
+                    <th class="p-3 border border-gray-700 text-left">Comment</th>
+                    <th class="p-3 border border-gray-700 text-left">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for review in reviews %}
+                <tr class="hover:bg-gray-800">
+                    <td class="p-3 border border-gray-700">{{ forloop.counter }}</td>
+                    <td class="p-3 border border-gray-700">{{ review.user.username }}</td>
+                    <td class="p-3 border border-gray-700">{{ review.movie.title }}</td>
+                    <td class="p-3 border border-gray-700">
+                        {% if review.rating %}
+                        <span class="text-yellow-400">⭐ {{ review.rating }}/5</span>
+                        {% else %}
+                        <span class="text-gray-500">–</span>
+                        {% endif %}
+                    </td>
+                    <td class="p-3 border border-gray-700">{{ review.comment|default:"–" }}</td>
+                    <td class="p-3 border border-gray-700">{{ review.created_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="text-gray-400 mt-4">No reviews submitted yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

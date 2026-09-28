@@ -1,0 +1,142 @@
+
+
+Table auth_group {
+  id integer [primary key, increment]
+  name varchar(150) [unique, not null]
+}
+
+Table auth_permission {
+  id integer [primary key, increment]
+  content_type_id integer [not null]
+  codename varchar(100) [not null]
+  name varchar(255) [not null]
+}
+
+Table auth_group_permissions {
+  id integer [primary key, increment]
+  group_id integer [not null]
+  permission_id integer [not null]
+}
+
+Table auth_user {
+  id integer [primary key, increment]
+  password varchar(128) [not null]
+  last_login datetime
+  is_superuser boolean [not null]
+  username varchar(150) [unique, not null]
+  last_name varchar(150) [not null]
+  email varchar(254) [not null]
+  is_staff boolean [not null]
+  is_active boolean [not null]
+  date_joined datetime [not null]
+  first_name varchar(150) [not null]
+}
+
+Table auth_user_groups {
+  id integer [primary key, increment]
+  user_id integer [not null]
+  group_id integer [not null]
+}
+
+Table auth_user_user_permissions {
+  id integer [primary key, increment]
+  user_id integer [not null]
+  permission_id integer [not null]
+}
+
+Table django_admin_log {
+  id integer [primary key, increment]
+  object_id text
+  object_repr varchar(200) [not null]
+  action_flag smallint [not null]
+  change_message text [not null]
+  content_type_id integer
+  user_id integer [not null]
+  action_time datetime [not null]
+}
+
+Table django_content_type {
+  id integer [primary key, increment]
+  app_label varchar(100) [not null]
+  model varchar(100) [not null]
+}
+
+Table django_migrations {
+  id integer [primary key, increment]
+  app varchar(255) [not null]
+  name varchar(255) [not null]
+  applied datetime [not null]
+}
+
+Table django_session {
+  session_key varchar(40) [primary key, not null]
+  session_data text [not null]
+  expire_date datetime [not null]
+}
+
+Table movies_adminuser {
+  id integer [primary key, increment]
+  username varchar(150) [unique, not null]
+  email varchar(254)
+  full_name varchar(255)
+  contact varchar(20)
+  profile_photo varchar(100)
+  is_active boolean [not null]
+  is_staff boolean [not null]
+  is_superuser boolean [not null]
+  last_login datetime
+  password varchar(128) [not null]
+}
+
+Table movies_movie {
+  id integer [primary key, increment]
+  title varchar(255) [not null]
+  year integer [not null]
+  genre text [not null]
+  director text [not null]
+  actors text [not null]
+  plot text [not null]
+  imdb_rating real [not null]
+  imdb_votes varchar(50)
+  box_office varchar(50)
+  poster_url varchar(200)
+}
+
+Table movies_favorite {
+  id integer [primary key, increment]
+  created_at datetime [not null]
+  movie_id bigint [not null]
+  user_id integer [not null]
+}
+
+Table movies_review {
+  id integer [primary key, increment]
+  comment text [not null]
+  created_at datetime [not null]
+  movie_id bigint [not null]
+  user_id integer [not null]
+  rating integer
+}
+
+Table movies_userprofile {
+  id integer [primary key, increment]
+  full_name varchar(255)
+  contact varchar(20)
+  profile_photo varchar(100)
+  user_id integer [not null, unique]
+}
+
+// Relationships
+Ref: auth_group_permissions.group_id > auth_group.id
+Ref: auth_group_permissions.permission_id > auth_permission.id
+Ref: auth_user_groups.group_id > auth_group.id
+Ref: auth_user_groups.user_id > auth_user.id
+Ref: auth_user_user_permissions.permission_id > auth_permission.id
+Ref: auth_user_user_permissions.user_id > auth_user.id
+Ref: django_admin_log.content_type_id > django_content_type.id
+Ref: django_admin_log.user_id > auth_user.id
+Ref: movies_favorite.movie_id > movies_movie.id
+Ref: movies_favorite.user_id > auth_user.id
+Ref: movies_review.movie_id > movies_movie.id
+Ref: movies_review.user_id > auth_user.id
+Ref: movies_userprofile.user_id > auth_user.id

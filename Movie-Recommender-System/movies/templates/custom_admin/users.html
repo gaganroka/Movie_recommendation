@@ -1,0 +1,49 @@
+{% extends "custom_admin/base.html" %}
+{% load static %}
+{% block title %}Total Users{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+  <h1 class="text-2xl font-bold mb-6">Total Users</h1>
+
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse text-sm">
+      <thead class="sticky top-0 bg-black z-10">
+        <tr class="border-b border-gray-700">
+          <th class="py-3 px-4 font-semibold">SN</th>
+          <th class="py-3 px-4 font-semibold">Photo</th>
+          <th class="py-3 px-4 font-semibold">Username</th>
+          <th class="py-3 px-4 font-semibold">Contact</th>
+        </tr>
+      </thead>
+    </table>
+
+    <div class="max-h-96 overflow-y-auto rounded-md border border-gray-700">
+      <table class="w-full text-left text-sm">
+        <tbody>
+          {% for user in users %}
+          <tr class="border-b border-gray-800 hover:bg-zinc-800 transition">
+            <td class="py-3 px-4">{{ forloop.counter }}</td>
+            <td class="py-3 px-4">
+              {% if user.profile and user.profile.profile_photo %}
+                <img src="{{ user.profile.profile_photo.url }}" class="h-12 w-12 rounded-full object-cover" />
+              {% else %}
+                <img src="{% static 'default.jpg' %}" class="h-12 w-12 rounded-full object-cover" alt="Default" />
+              {% endif %}
+            </td>
+            <td class="py-3 px-4">{{ user.username }}</td>
+            <td class="py-3 px-4">
+              {% if user.profile and user.profile.contact %}
+                {{ user.profile.contact }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

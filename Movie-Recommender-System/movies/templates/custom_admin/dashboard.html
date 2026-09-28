@@ -1,0 +1,56 @@
+{% extends "custom_admin/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+
+  <!-- 🟦 Total Movies -->
+  <div class="rounded-2xl shadow-xl p-6 relative hover:scale-[1.02] transition-all duration-300"
+    style="background-color: #181818;">
+    <div class="absolute top-4 right-4 bg-blue-600 p-2 rounded-lg text-white">
+      <i class="fas fa-play"></i>
+    </div>
+    <h2 class="text-base font-semibold text-gray-300 mb-2">Total Movies</h2>
+    <p class="text-3xl font-bold text-white">{{ total_movies }}</p>
+    <div class="mt-6 text-center">
+      <a href="{% url 'manage_movies' %}"
+        class="inline-block py-2 px-6 ml-[120px] rounded-full border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white transition font-medium">
+        View Details
+      </a>
+    </div>
+  </div>
+
+  <!-- 🟧 Total Users -->
+  <div class="rounded-2xl shadow-xl p-6 relative hover:scale-[1.02] transition-all duration-300"
+    style="background-color: #181818;">
+    <div class="absolute top-4 right-4 bg-orange-500 p-2 rounded-lg text-white">
+      <i class="fas fa-user"></i>
+    </div>
+    <h2 class="text-base font-semibold text-gray-300 mb-2">Total Users</h2>
+    <p class="text-3xl font-bold text-white">{{ total_users }}</p>
+    <div class="mt-6 text-center">
+      <a href="{% url 'manage_users' %}" class="inline-block py-2 px-6 ml-[120px] rounded-full border border-orange-500 text-orange-400
+        hover:bg-orange-500 hover:text-white transition font-medium">
+        View Details
+      </a>
+    </div>
+  </div>
+
+  <!-- 🤍 Total Interactions -->
+  <div class="rounded-2xl shadow-xl p-6 relative hover:scale-[1.02] transition-all duration-300"
+    style="background-color: #181818;">
+    <div class="absolute top-4 right-4 bg-gray-600 p-2 rounded-lg text-white">
+      <i class="fas fa-heart"></i>
+    </div>
+    <h2 class="text-base font-semibold text-gray-300 mb-2">Total Interactions</h2>
+    <p class="text-3xl font-bold text-white">{{ total_reviews }}</p>
+    <div class="mt-6 text-center">
+      <a href="{% url 'manage_reviews' %}" class="inline-block py-2 px-6 ml-[120px] rounded-full border border-gray-500 text-gray-300 hover:bg-gray-500
+        hover:text-white transition font-medium">
+        View Details
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Movie Recommender{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Glassmorphism Effect */
+        * {
+            font-family: sans-serif;
+
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #search-results {
+            position: absolute;
+            z-index: 50;
+            /* ✅ Ensures search results appear above everything */
+            width: 100%;
+            background-color: rgba(31, 41, 55, 0.95);
+            /* Dark background */
+            border-radius: 0.5rem;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            max-height: 300px;
+            /* Prevents overflow */
+            overflow-y: auto;
+            /* Enables scrolling if too many results */
+        }
+
+        #star-rating span {
+            font-size: 2rem;
+            /* Make stars bigger */
+            cursor: pointer;
+            transition: color 0.3s ease-in-out;
+        }
+
+        #star-rating span:hover {
+            color: #FFD700 !important;
+            /* Highlight on hover */
+        }
+
+        
+    </style>
+</head>
+
+<body class="bg-black text-gray-200">
+
+    {% include 'movies/navbar.html' %}
+    <!-- Include the Navbar Component -->
+
+    <div class="w-full">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% include 'movies/footer.html' %}
+
+</body>
+
+</html>

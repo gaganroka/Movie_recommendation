@@ -1,0 +1,23 @@
+{% load static %}
+<!-- templates/custom_admin/navbar.html -->
+<nav class="fixed top-0 left-0 right-0 z-50 h-16 bg-zinc-900 flex items-center justify-between px-6 shadow">
+  <!-- Left: Hamburger + Title -->
+  <div class="flex items-center gap-4">
+    <button onclick="toggleSidebar()" class="text-white text-xl">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="text-xl font-semibold">Movie Recommender</div>
+  </div>
+
+  <!-- Middle: Search -->
+  <form method="GET" action="#" class="hidden md:flex w-1/2">
+    <input type="text" name="q" placeholder="Search for movies"
+      class="w-[60%] px-5 py-3 rounded-full bg-zinc-800 text-white focus:outline-none placeholder:text-gray-400" />
+  </form>
+
+  <!-- Right: Notifications & Profile -->
+  <div class="flex items-center gap-4">
+    <button class="text-white"><i class="fa fa-bell"></i></button>
+    <img src="{% static 'default.jpg' %}" alt="Profile" class="w-10 h-10 rounded-full border border-gray-500" />
+  </div>
+</nav>

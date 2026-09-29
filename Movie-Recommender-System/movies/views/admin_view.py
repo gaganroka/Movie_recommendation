@@ -62,6 +62,7 @@ def admin_login(request):
                 response = redirect("admin_dashboard")
                 # Set admin cookie - separate from Django's session cookie
                 response.set_cookie('admin_session_key', session_key, max_age=86400*7, httponly=True)
+                # No message needed — redirect takes user directly to dashboard
                 return response
             else:
                 messages.error(request, "Incorrect password.")
@@ -74,6 +75,7 @@ def admin_login(request):
 # 🚪 Admin Logout - Only removes admin cookie/session
 
 def admin_logout(request):
+    # Accept GET (navbar link) or POST (sidebar button) — both clear session
     cookie = request.COOKIES.get('admin_session_key')
     if cookie:
         AdminAuthSession.objects.filter(session_key=cookie).update(is_active=False)

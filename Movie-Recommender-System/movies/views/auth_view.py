@@ -54,7 +54,7 @@ def user_login(request):
 
             if auth_user:
                 login(request, auth_user)
-                messages.success(request, "Login successful!")
+                # Remove success message since we redirect to homepage immediately
                 return redirect("home")
             else:
                 messages.error(request, "Invalid password. Please try again.")  # Wrong password
@@ -74,5 +74,5 @@ def user_logout(request):
     # Only log out if the user is actually authenticated (not admin session only)
     if request.user.is_authenticated:
         logout(request)
-    messages.success(request, "You have been logged out successfully.")
+    # No logout message — redirect takes user directly to homepage
     return redirect("home")
